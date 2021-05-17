@@ -9,6 +9,9 @@ void main() {
   //? create order
   final order = Order(type: 'chocolate');
 
+  //* add order to stream  (order request)
+  controller.sink.add(order);
+
   //??? streamTransformer from handlers that handle sink
 
   final baker = StreamTransformer.fromHandlers(handleData: (cakeType, sink) {
@@ -18,10 +21,6 @@ void main() {
       sink.addError('error !! -> I can\'t bake that type of cake  !!! ');
     }
   });
-
-  //* add order to stream  (order request)
-  controller.sink.add(order);
-
   //! map and transform and listen to the event
   controller.stream.map((order) => order.type).transform(baker).listen(
       (cake) => print('heres your cake $cake'),
